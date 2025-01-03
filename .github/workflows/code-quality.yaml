@@ -1,0 +1,25 @@
+name: Code Quality Checks
+on: push
+jobs:
+  check-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - name: Use Node.js v22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Format
+        run: pnpm run format
+      - name: Lint
+        run: pnpm run lint
+      - name: Check types
+        run: pnpm run check-types
