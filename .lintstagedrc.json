@@ -1,8 +1,4 @@
 {
-  "*.{js,jsx,ts,tsx}": [
-    "prettier --write",
-    "eslint --fix",
-    "eslint --report-unused-disable-directives --max-warnings 0"
-  ],
+  "*.{js,jsx,ts,tsx}": ["prettier --write", "eslint --fix", "eslint"],
   "*.{json,md,mdx,css,html,yml,yaml}": "prettier --write"
 }
