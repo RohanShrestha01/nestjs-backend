@@ -19,7 +19,7 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('Hamro Events API')
+    .setTitle('Event Management System API')
     .setDescription('API for Event Management System')
     .addServer(`http://localhost:${process.env.PORT ?? 3000}`)
     .setVersion('1.0')

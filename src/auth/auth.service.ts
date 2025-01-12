@@ -8,6 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { LoginDto } from './dtos/login.dto';
+import { ActiveUserData } from './interfaces/active-user-data.interface';
 import { HashingProvider } from './providers/hashing.provider';
 
 @Injectable()
@@ -35,7 +36,7 @@ export class AuthService {
       {
         sub: foundUser.id,
         email: foundUser.email,
-      },
+      } as ActiveUserData,
       { expiresIn: this.configService.getOrThrow('ACCESS_TOKEN_TTL') },
     );
     const { password, ...user } = foundUser;
