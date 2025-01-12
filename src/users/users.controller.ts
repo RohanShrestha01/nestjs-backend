@@ -9,6 +9,9 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { Auth } from '../auth/decorators/auth.decorator';
+import { AuthType } from '../auth/enums/auth-type-enum';
 import { PaginationQueryDto } from '../common/pagination/dtos/pagination-query.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -19,21 +22,25 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @Auth(AuthType.None)
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
   @Get()
+  @ApiBearerAuth()
   findAll(@Query() paginationQueryDto: PaginationQueryDto) {
     return this.usersService.findAll(paginationQueryDto);
   }
 
   @Get(':id')
+  @ApiBearerAuth()
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOne(id);
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
@@ -42,6 +49,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.remove(id);
   }

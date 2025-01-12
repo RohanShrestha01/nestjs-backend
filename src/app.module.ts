@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { AccessTokenGuard } from './auth/guards/access-token.guard';
+import { AuthenticationGuard } from './auth/guards/authentication/authentication.guard';
 import { PaginationModule } from './common/pagination/pagination.module';
 import { UsersModule } from './users/users.module';
 
@@ -25,11 +29,22 @@ import { UsersModule } from './users/users.module';
         synchronize: configService.getOrThrow('NODE_ENV') === 'development',
       }),
     }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.getOrThrow('JWT_SECRET'),
+      }),
+    }),
     PaginationModule,
     AuthModule,
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    AccessTokenGuard,
+    { provide: APP_GUARD, useClass: AuthenticationGuard },
+  ],
 })
 export class AppModule {}

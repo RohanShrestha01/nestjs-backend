@@ -23,6 +23,7 @@ async function bootstrap() {
     .setDescription('API for Event Management System')
     .addServer(`http://localhost:${process.env.PORT ?? 3000}`)
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
