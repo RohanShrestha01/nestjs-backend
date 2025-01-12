@@ -5,6 +5,7 @@ import { UsersModule } from '../users/users.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { BcryptProvider } from './providers/bcrypt.provider';
+import { GenerateTokensProvider } from './providers/generate-tokens.provider';
 import { HashingProvider } from './providers/hashing.provider';
 
 @Module({
@@ -21,6 +22,7 @@ import { HashingProvider } from './providers/hashing.provider';
   providers: [
     AuthService,
     { provide: HashingProvider, useClass: BcryptProvider },
+    GenerateTokensProvider,
   ],
   controllers: [AuthController],
   exports: [HashingProvider],

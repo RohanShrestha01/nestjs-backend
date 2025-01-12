@@ -4,11 +4,12 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { LoginDto } from './dtos/login.dto';
+import { RefreshTokenDto } from './dtos/refresh-token.dto';
 import { ActiveUserData } from './interfaces/active-user-data.interface';
+import { GenerateTokensProvider } from './providers/generate-tokens.provider';
 import { HashingProvider } from './providers/hashing.provider';
 
 @Injectable()
@@ -17,8 +18,8 @@ export class AuthService {
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
     private readonly hashingProvider: HashingProvider,
+    private readonly generateTokensProvider: GenerateTokensProvider,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
   ) {}
 
   async login(loginDto: LoginDto) {
@@ -32,18 +33,25 @@ export class AuthService {
     )
       throw new UnauthorizedException('Incorrect email or password');
 
-    const accessToken = await this.jwtService.signAsync(
-      {
-        sub: foundUser.id,
-        email: foundUser.email,
-      } as ActiveUserData,
-      { expiresIn: this.configService.getOrThrow('ACCESS_TOKEN_TTL') },
-    );
-    const { password, ...user } = foundUser;
+    const tokens = await this.generateTokensProvider.generateTokens(foundUser);
 
     return {
-      accessToken,
-      user,
+      ...tokens,
+      user: {
+        id: foundUser.id,
+        email: foundUser.email,
+        name: foundUser.name,
+      },
     };
+  }
+
+  async refreshToken(refreshTokenDto: RefreshTokenDto) {
+    const { sub } = await this.jwtService.verifyAsync<
+      Pick<ActiveUserData, 'sub'>
+    >(refreshTokenDto.refreshToken);
+
+    const user = await this.usersService.findOne(sub);
+
+    return await this.generateTokensProvider.generateTokens(user);
   }
 }
