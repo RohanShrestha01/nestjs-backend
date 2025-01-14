@@ -3,9 +3,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from '../users/users.module';
 import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { AuthService } from './providers/auth.service';
 import { BcryptProvider } from './providers/bcrypt.provider';
 import { GenerateTokensProvider } from './providers/generate-tokens.provider';
+import { GoogleAuthenticationService } from './providers/google-authentication.service';
 import { HashingProvider } from './providers/hashing.provider';
 
 @Module({
@@ -23,6 +24,7 @@ import { HashingProvider } from './providers/hashing.provider';
     AuthService,
     { provide: HashingProvider, useClass: BcryptProvider },
     GenerateTokensProvider,
+    GoogleAuthenticationService,
   ],
   controllers: [AuthController],
   exports: [HashingProvider],

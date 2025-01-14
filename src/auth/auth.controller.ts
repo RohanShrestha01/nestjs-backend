@@ -1,25 +1,34 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { AuthService } from './auth.service';
 import { Auth } from './decorators/auth.decorator';
+import { GoogleTokenDto } from './dtos/google-token.dto';
 import { LoginDto } from './dtos/login.dto';
 import { RefreshTokenDto } from './dtos/refresh-token.dto';
 import { AuthType } from './enums/auth-type-enum';
+import { AuthService } from './providers/auth.service';
+import { GoogleAuthenticationService } from './providers/google-authentication.service';
 
 @Controller('auth')
+@Auth(AuthType.None)
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly googleAuthenticationService: GoogleAuthenticationService,
+  ) {}
 
   @Post('login')
-  @Auth(AuthType.None)
   @HttpCode(HttpStatus.OK)
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
 
   @Post('refresh-token')
-  @Auth(AuthType.None)
   @HttpCode(HttpStatus.OK)
   refreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
     return this.authService.refreshToken(refreshTokenDto);
+  }
+
+  @Post('google')
+  googleAuthenticate(@Body() googleTokenDto: GoogleTokenDto) {
+    return this.googleAuthenticationService.googleAuthenticate(googleTokenDto);
   }
 }

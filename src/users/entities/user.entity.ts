@@ -17,8 +17,11 @@ export class User {
   @Column({ unique: true, length: 255 })
   email: string;
 
-  @Column({ length: 100 })
-  password: string;
+  @Column({ length: 100, nullable: true })
+  password?: string;
+
+  @Column({ nullable: true })
+  googleId?: string;
 
   @Column({ default: true })
   isActive: boolean;

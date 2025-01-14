@@ -14,6 +14,7 @@ import { PaginationProvider } from '../common/pagination/providers/pagination.pr
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { User } from './entities/user.entity';
+import { GoogleUser } from './interfaces/google-user.interface';
 
 @Injectable()
 export class UsersService {
@@ -36,6 +37,11 @@ export class UsersService {
     return await this.usersRepository.save(user);
   }
 
+  async createGoogleUser(googleUser: GoogleUser) {
+    const user = this.usersRepository.create(googleUser);
+    return await this.usersRepository.save(user);
+  }
+
   async findAll(
     paginationQueryDto: PaginationQueryDto,
   ): Promise<Paginated<User>> {
@@ -53,6 +59,10 @@ export class UsersService {
 
   async findOneByEmail(email: string) {
     return await this.usersRepository.findOneBy({ email });
+  }
+
+  async findOneByGoogleId(googleId: string) {
+    return await this.usersRepository.findOneBy({ googleId });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {}

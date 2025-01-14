@@ -5,12 +5,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/users.service';
-import { LoginDto } from './dtos/login.dto';
-import { RefreshTokenDto } from './dtos/refresh-token.dto';
-import { ActiveUserData } from './interfaces/active-user-data.interface';
-import { GenerateTokensProvider } from './providers/generate-tokens.provider';
-import { HashingProvider } from './providers/hashing.provider';
+import { UsersService } from '../../users/users.service';
+import { LoginDto } from '../dtos/login.dto';
+import { RefreshTokenDto } from '../dtos/refresh-token.dto';
+import { ActiveUserData } from '../interfaces/active-user-data.interface';
+import { GenerateTokensProvider } from './generate-tokens.provider';
+import { HashingProvider } from './hashing.provider';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +25,7 @@ export class AuthService {
   async login(loginDto: LoginDto) {
     const foundUser = await this.usersService.findOneByEmail(loginDto.email);
     if (
-      !foundUser ||
+      !foundUser?.password ||
       !(await this.hashingProvider.comparePassword(
         loginDto.password,
         foundUser.password,
