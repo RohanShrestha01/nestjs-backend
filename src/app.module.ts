@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { AccessTokenGuard } from './auth/guards/access-token.guard';
 import { AuthenticationGuard } from './auth/guards/authentication/authentication.guard';
 import { PaginationModule } from './common/pagination/pagination.module';
+import { UploadsModule } from './uploads/uploads.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -37,6 +38,7 @@ import { UsersModule } from './users/users.module';
       }),
     }),
     PaginationModule,
+    UploadsModule,
     AuthModule,
     UsersModule,
   ],
