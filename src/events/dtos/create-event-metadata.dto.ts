@@ -1,7 +1,10 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class GoogleTokenDto {
+export class CreateEventMetadataDto {
   @IsString()
   @IsNotEmpty()
-  token: string;
+  key: string;
+
+  @IsNotEmpty()
+  value: any;
 }

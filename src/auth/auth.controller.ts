@@ -1,4 +1,5 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { CreateUserDto } from '../users/dtos/create-user.dto';
 import { Auth } from './decorators/auth.decorator';
 import { GoogleTokenDto } from './dtos/google-token.dto';
 import { LoginDto } from './dtos/login.dto';
@@ -15,6 +16,12 @@ export class AuthController {
     private readonly googleAuthenticationService: GoogleAuthenticationService,
   ) {}
 
+  @Post('signup')
+  @HttpCode(HttpStatus.OK)
+  signup(@Body() createUserDto: CreateUserDto) {
+    return this.authService.signup(createUserDto);
+  }
+
   @Post('login')
   @HttpCode(HttpStatus.OK)
   login(@Body() loginDto: LoginDto) {
@@ -28,6 +35,7 @@ export class AuthController {
   }
 
   @Post('google')
+  @HttpCode(HttpStatus.OK)
   googleAuthenticate(@Body() googleTokenDto: GoogleTokenDto) {
     return this.googleAuthenticationService.googleAuthenticate(googleTokenDto);
   }

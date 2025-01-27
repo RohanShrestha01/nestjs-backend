@@ -65,7 +65,12 @@ export class UsersService {
     return await this.usersRepository.findOneBy({ googleId });
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {}
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.usersRepository.findOneBy({ id });
+    if (!user) throw new NotFoundException('User not found');
+    Object.assign(user, updateUserDto);
+    return await this.usersRepository.save(user);
+  }
 
   async remove(id: number) {
     const user = await this.usersRepository.findOneBy({ id });

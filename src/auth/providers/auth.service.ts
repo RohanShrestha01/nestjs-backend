@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from '../../users/dtos/create-user.dto';
 import { UsersService } from '../../users/users.service';
 import { LoginDto } from '../dtos/login.dto';
 import { RefreshTokenDto } from '../dtos/refresh-token.dto';
@@ -21,6 +22,10 @@ export class AuthService {
     private readonly generateTokensProvider: GenerateTokensProvider,
     private readonly jwtService: JwtService,
   ) {}
+
+  async signup(createUserDto: CreateUserDto) {
+    return await this.usersService.create(createUserDto);
+  }
 
   async login(loginDto: LoginDto) {
     const foundUser = await this.usersService.findOneByEmail(loginDto.email);

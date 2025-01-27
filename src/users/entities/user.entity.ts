@@ -3,9 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Event } from '../../events/entities/event.entity';
 
 @Entity()
 export class User {
@@ -25,6 +27,9 @@ export class User {
   @Column({ nullable: true })
   @Exclude()
   googleId?: string;
+
+  @OneToMany(() => Event, (event) => event.organizer)
+  events: Event[];
 
   @Column({ default: true })
   isActive: boolean;
