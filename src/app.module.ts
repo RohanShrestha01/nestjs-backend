@@ -10,6 +10,7 @@ import { AccessTokenGuard } from './auth/guards/access-token.guard';
 import { AuthenticationGuard } from './auth/guards/authentication/authentication.guard';
 import { PaginationModule } from './common/pagination/pagination.module';
 import { EventsModule } from './events/events.module';
+import { TagsModule } from './tags/tags.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { UsersModule } from './users/users.module';
 
@@ -43,6 +44,7 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     UsersModule,
     EventsModule,
+    TagsModule,
   ],
   controllers: [AppController],
   providers: [
