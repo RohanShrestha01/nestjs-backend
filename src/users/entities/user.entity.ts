@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Role } from '../../auth/enums/role.enum';
 import { Event } from '../../events/entities/event.entity';
 
 @Entity()
@@ -27,6 +28,9 @@ export class User {
   @Column({ nullable: true })
   @Exclude()
   googleId?: string;
+
+  @Column({ type: 'enum', array: true, enum: Role, default: [Role.USER] })
+  roles: Role[];
 
   @OneToMany(() => Event, (event) => event.organizer)
   events: Event[];

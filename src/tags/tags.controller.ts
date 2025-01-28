@@ -10,6 +10,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../auth/enums/role.enum';
 import { PaginationQueryDto } from '../common/pagination/dtos/pagination-query.dto';
 import { CreateTagDto } from './dtos/create-tag.dto';
 import { UpdateTagDto } from './dtos/update-tag.dto';
@@ -17,6 +19,7 @@ import { TagsService } from './tags.service';
 
 @Controller('tags')
 @ApiBearerAuth()
+@Roles(Role.ADMIN)
 export class TagsController {
   constructor(private readonly tagsService: TagsService) {}
 

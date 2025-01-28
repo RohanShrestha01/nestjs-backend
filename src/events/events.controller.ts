@@ -12,7 +12,9 @@ import {
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { ActiveUser } from '../auth/decorators/active-user.decorator';
 import { Auth } from '../auth/decorators/auth.decorator';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { AuthType } from '../auth/enums/auth-type-enum';
+import { Role } from '../auth/enums/role.enum';
 import { PaginationQueryDto } from '../common/pagination/dtos/pagination-query.dto';
 import { CreateEventDto } from './dtos/create-event.dto';
 import { UpdateEventDto } from './dtos/update-event.dto';
@@ -24,6 +26,7 @@ export class EventsController {
 
   @Post()
   @ApiBearerAuth()
+  @Roles(Role.ADMIN, Role.ORGANIZER)
   create(
     @Body() createEventDto: CreateEventDto,
     @ActiveUser('sub') userId: number,
@@ -45,6 +48,7 @@ export class EventsController {
 
   @Patch(':id')
   @ApiBearerAuth()
+  @Roles(Role.ADMIN, Role.ORGANIZER)
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateEventDto: UpdateEventDto,
@@ -54,6 +58,7 @@ export class EventsController {
 
   @Delete(':id')
   @ApiBearerAuth()
+  @Roles(Role.ADMIN, Role.ORGANIZER)
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.eventsService.remove(id);
   }

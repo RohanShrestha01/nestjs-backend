@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { AccessTokenGuard } from './auth/guards/access-token.guard';
 import { AuthenticationGuard } from './auth/guards/authentication/authentication.guard';
+import { RolesGuard } from './auth/guards/roles.guard';
 import { PaginationModule } from './common/pagination/pagination.module';
 import { EventsModule } from './events/events.module';
 import { TagsModule } from './tags/tags.module';
@@ -51,6 +52,7 @@ import { UsersModule } from './users/users.module';
     AppService,
     AccessTokenGuard,
     { provide: APP_GUARD, useClass: AuthenticationGuard },
+    { provide: APP_GUARD, useClass: RolesGuard },
   ],
 })
 export class AppModule {}

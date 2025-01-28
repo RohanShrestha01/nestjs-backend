@@ -26,7 +26,7 @@ export class GenerateTokensProvider {
       this.signToken<Partial<ActiveUserData>>(
         user.id,
         this.configService.getOrThrow('ACCESS_TOKEN_TTL'),
-        { email: user.email },
+        { email: user.email, roles: user.roles },
       ),
       this.signToken(
         user.id,
